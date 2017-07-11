@@ -8,5 +8,5 @@ const express=require('express');
  app.use(express.static(publicPath));
 
  app.listen(port,()=>{
-   console.log(`sever is up on {port}`);
+   console.log(`sever is up on ${port}`);
  });
