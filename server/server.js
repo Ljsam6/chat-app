@@ -13,6 +13,15 @@ const express=require('express');
  io.on('connection',(socket)=>{
    console.log('new user connected');
 
+socket.emit('newMessage',{
+  from:'lijo',
+  text:'hey there',
+  createdAt:'123'
+});
+socket.on('createMessage',(mess)=>{
+  console.log('message send:',mess);
+});
+
    socket.on('disconnect',(io)=>{
      console.log('disconnected from user');
    });
