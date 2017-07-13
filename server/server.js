@@ -19,6 +19,16 @@ const express=require('express');
 //   createdAt:'123'
 // });
 
+socket.emit('newMessage',{
+  from:'admin',
+  text:'welcome to chat app',
+  time:new Date().getTime()
+});
+socket.broadcast.emit('newMessage',{
+  from:'admin',
+  text:'new user joined'
+});
+
 socket.on('createMessage',(message)=>{
   console.log('message send:',message);
   io.emit('newMessage',{
@@ -26,6 +36,12 @@ socket.on('createMessage',(message)=>{
     text:message.text,
     time:new Date().getTime()
     });
+ // socket.broadcast.emit('newMessage',{
+ //    from:message.from,
+ //    text:message.text,
+ //    time:new Date().getTime()
+ //    });
+
 });
 
    socket.on('disconnect',(io)=>{
