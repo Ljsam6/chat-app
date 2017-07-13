@@ -13,13 +13,19 @@ const express=require('express');
  io.on('connection',(socket)=>{
    console.log('new user connected');
 
-socket.emit('newMessage',{
-  from:'lijo',
-  text:'hey there',
-  createdAt:'123'
-});
-socket.on('createMessage',(mess)=>{
-  console.log('message send:',mess);
+// socket.emit('newMessage',{
+//   from:'lijo',
+//   text:'hey there',
+//   createdAt:'123'
+// });
+
+socket.on('createMessage',(message)=>{
+  console.log('message send:',message);
+  io.emit('newMessage',{
+    from:message.from,
+    text:message.text,
+    time:new Date().getTime()
+    });
 });
 
    socket.on('disconnect',(io)=>{
