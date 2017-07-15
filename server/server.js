@@ -4,7 +4,7 @@ const port=process.env.PORT || 3000;
 const socketIO=require('socket.io');
 const http=require('http');
 
-const {generateMessage}=require('./utils/message');
+const {generateMessage,generateLocationMessage}=require('./utils/message');
 
 const express=require('express');
  var app=express();
@@ -34,6 +34,12 @@ socket.on('createMessage',(message)=>{
  //    });
 
 });
+
+   socket.on('createlocation',(location)=>{
+    //  console.log('location lang',location.langitude);
+    //  console.log('location lat',location.latitude);
+     io.emit('newLocationMessage',generateLocationMessage('admin',location.latitude,location.longitude));
+ });
 
    socket.on('disconnect',(io)=>{
      console.log('disconnected from user');
