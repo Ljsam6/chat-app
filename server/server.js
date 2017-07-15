@@ -24,7 +24,7 @@ const express=require('express');
 socket.emit('newMessage',generateMessage('admin','welcome to chat app'));
 socket.broadcast.emit('newMessage',generateMessage('admin','new user joined'));
 
-socket.on('createMessage',(message)=>{
+socket.on('createMessage',(message,callback)=>{
   console.log('message send:',message);
   io.emit('newMessage',generateMessage(message.from,message.text));
  // socket.broadcast.emit('newMessage',{
@@ -32,13 +32,14 @@ socket.on('createMessage',(message)=>{
  //    text:message.text,
  //    time:new Date().getTime()
  //    });
-
+callback();
 });
 
    socket.on('createlocation',(location)=>{
     //  console.log('location lang',location.langitude);
     //  console.log('location lat',location.latitude);
      io.emit('newLocationMessage',generateLocationMessage('admin',location.latitude,location.longitude));
+
  });
 
    socket.on('disconnect',(io)=>{
