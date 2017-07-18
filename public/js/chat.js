@@ -1,5 +1,20 @@
 var socket=io();
 
+function scrollToBottom(){
+  var messages=jQuery('#messages');
+  var newMessage=messages.children('li:last-child')
+  //heights
+var scrollTop=messages.prop('scrollTop');
+  var clientHeight=messages.prop('clientHeight');
+  var scrollHeight=messages.prop('scrollHeight');
+  var newMessageHeight=newMessage.innerHeight();
+  var lastMessageHeight=newMessage.prev().innerHeight();
+
+  if(scrollTop+clientHeight+newMessageHeight+lastMessageHeight >= scrollHeight){
+    messages.scrollTop(scrollHeight);
+  }
+}
+
 socket.on('connect', function(){
   console.log('connected to server');
 
@@ -26,12 +41,15 @@ socket.on('newLocationMessage',function(message){
     time:sendAt
   });
   jQuery('#messages').append(html);
+  scrollToBottom();
+
   // var li=jQuery('<li></li>');
   // var a=jQuery('<a target="_blank">My Current Location</a>');
   // li.text(`${message.from} ${sendAt}:`);
   // a.attr('href',message.url);
   // li.append(a);
   // jQuery('#messages').append(li);
+
 });
 
 //new message
@@ -45,7 +63,7 @@ var html=Mustache.render(template,{
   time:sendAt
 });
 jQuery('#messages').append(html);
-
+scrollToBottom();
 });
 
 //geolocation
