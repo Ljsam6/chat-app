@@ -17,12 +17,19 @@ var scrollTop=messages.prop('scrollTop');
 
 socket.on('connect', function(){
   console.log('connected to server');
+   var params=jQuery.deparam(window.location.search);
+socket.emit('join',params,function(err)
+{
+  if(err){
+    window.location.href='/'
+    alert(err);
+  }
+  else{
+    console.log('no err');
+  }
+});
 
 
-  // socket.emit('createMessage',{
-    // from:'josly',
-  //   text:'yo wassup bro'
-  // });
  });
 
 
@@ -51,7 +58,15 @@ socket.on('newLocationMessage',function(message){
   // jQuery('#messages').append(li);
 
 });
+socket.on('updateUserList',function(users){
+  var ol=jQuery('<ol></ol>');
 
+  users.forEach(function(user){
+    ol.append(jQuery('<li></li>').text(user));
+  });
+
+  jQuery('#users').html(ol);
+});
 //new message
 socket.on('newMessage',function(message){
   var sendAt=moment(message.time).format('h:mm a');
@@ -90,11 +105,13 @@ alert('unable to fetch location');
 
 jQuery('#message-form').on('submit',function (e){
   e.preventDefault();
+
+var messageTextBox=jQuery('[name=message]');
+
   socket.emit('createMessage',{
-   from:'user',
-   text:jQuery('[name=message]').val()
+   text: messageTextBox.val()
  },function(){
-   jQuery('[name=message]').val('')
+    messageTextBox.val('')
 
  });
 });
